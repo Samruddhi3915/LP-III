@@ -1,0 +1,108 @@
+#include <iostream>
+#include <chrono> // For measuring time
+using namespace std;
+using namespace std::chrono;
+
+int iterfibo(int no)
+{
+    int fibo0 = 0;
+    int fibo1 = 1, fibo3;
+    for (int i = 2; i <= no; i++)
+    {
+        fibo3 = fibo0 + fibo1;
+        fibo0 = fibo1;
+        fibo1 = fibo3;
+    }
+    return fibo3;
+}
+
+int recfibo(int no)
+{
+    if (no <= 1)
+    {
+        return no;
+    }
+    return recfibo(no - 1) + recfibo(no - 2);
+}
+
+int main()
+{
+    int ch, no;
+    char v = 'y';
+    while (v == 'y' || v == 'Y')
+    {
+//        high_resolution_clock::time_point start_time = high_resolution_clock::now(); // Start measuring time
+
+        cout << "1. Iterative Fibonacci\n";
+        cout << "2. Recursive Fibonacci\n";
+        cout << "Enter a choice\n";
+        cin >> ch;
+
+        switch (ch)
+        {
+        case 1:
+        {
+            cout << "Enter a number to find its Fibonacci\n";
+            cin >> no;
+
+            high_resolution_clock::time_point iter_start_time = high_resolution_clock::now(); // Start measuring time for iterative Fibonacci
+            int p = iterfibo(no);
+            high_resolution_clock::time_point iter_stop_time = high_resolution_clock::now(); // Stop measuring time for iterative Fibonacci
+            microseconds iter_duration = duration_cast<microseconds>(iter_stop_time - iter_start_time);
+            cout << "Iterative Fibonacci result: " << p << "\n";
+            cout << "Time taken for iterative Fibonacci: " << iter_duration.count() << " microseconds\n";
+            size_t space_used = sizeof(int) * 5 + sizeof(char) + sizeof(no) + sizeof(ch) + sizeof(v);
+            cout << "Space used by the program: " << space_used << " bytes\n";
+            break;
+        }
+        case 2:
+        {
+            cout << "Enter a number to find its Fibonacci\n";
+            cin >> no;
+
+            high_resolution_clock::time_point rec_start_time = high_resolution_clock::now(); // Start measuring time for recursive Fibonacci
+            int q = recfibo(no);
+            high_resolution_clock::time_point rec_stop_time = high_resolution_clock::now(); // Stop measuring time for recursive Fibonacci
+            microseconds rec_duration = duration_cast<microseconds>(rec_stop_time - rec_start_time);
+            cout << "Recursive Fibonacci result: " << q << "\n";
+            cout << "Time taken for recursive Fibonacci: " << rec_duration.count() << " microseconds\n";
+            size_t space_used = sizeof(int)  + sizeof(char) + sizeof(no) + sizeof(ch) + sizeof(v);
+            cout << "Space used by the program: " << space_used << " bytes\n";
+            break;
+        }
+        }
+
+        // high_resolution_clock::time_point stop_time = high_resolution_clock::now(); // Stop measuring overall time
+        // microseconds duration = duration_cast<microseconds>(stop_time - start_time);
+        // cout << "Total time taken: " << duration.count() << " microseconds\n";
+
+        // Space complexity estimation (a rough estimate)
+        //5=fibo0 fibo1 fibo3 i no
+
+
+        cout << "Do you want to continue\n";
+        cin >> v;
+    }
+
+    return 0;
+}
+
+
+/*time and space complexity of recursive and iterative fibonacci
+ *
+ * Great question! The time and space complexity of recursive and iterative Fibonacci implementations can be quite different.
+
+For the recursive Fibonacci:
+
+**Time Complexity:** The time complexity of the naive recursive approach is exponential, O(2^n), where n is the input to the Fibonacci function. This is because the algorithm makes two recursive calls for each call.
+
+**Space Complexity:** The space complexity is also high due to the recursive calls, leading to a stack of function calls. It's O(n) in terms of the space required on the call stack.
+
+Now, for the iterative Fibonacci:
+
+**Time Complexity:** The time complexity of the iterative approach is much better, O(n). It uses a simple loop to calculate Fibonacci numbers, and each iteration takes constant time.
+
+**Space Complexity:** The space complexity is O(1) for the iterative approach. It uses only a constant amount of space for variables, regardless of the input size.
+
+In summary, the iterative approach is more efficient in terms of both time and space complexity compared to the naive recursive approach.
+ */
